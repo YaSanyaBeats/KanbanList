@@ -1,0 +1,129 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:KanbanList.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="800"
+        x:Class="KanbanList.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="KanbanList"
+		Width="1000"
+		Height="800">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+	<Window.Styles>
+		<Style Selector="TextBlock.title">
+			<Setter Property="TextAlignment" Value="Center"></Setter>
+			<Setter Property="VerticalAlignment" Value="Center"></Setter>
+			<Setter Property="FontSize" Value="18"></Setter>
+			<Setter Property="FontWeight" Value="Bold"></Setter>
+		</Style>
+		<Style Selector="Border.border">
+			<Setter Property="BorderBrush" Value="Black"></Setter>
+			<Setter Property="BorderThickness" Value="0.5"></Setter>
+			<Setter Property="Padding" Value="10"></Setter>
+		</Style>
+		<Style Selector="Button.button">
+			<Setter Property="VerticalAlignment" Value="Stretch"></Setter>
+			<Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+			<Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+			<Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+		</Style>
+	</Window.Styles>
+	
+	<Grid RowDefinitions="40 40 * 40" ColumnDefinitions="* * *">
+		<DockPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3">
+			<Menu DockPanel.Dock="Top" VerticalAlignment="Top">
+				<MenuItem Header="File">
+					<MenuItem Name="NewButton" Header="New"/>
+					<MenuItem Name="SaveButton" Header="Save"/>
+					<MenuItem Name="LoadButton" Header="Load"/>
+					<Separator/>
+					<MenuItem Name="ExitButton" Header="Exit"/>
+				</MenuItem>
+				<MenuItem Click="OpenAbout" Header="About"/>
+			</Menu>
+		</DockPanel>
+		<Border Classes="border" Grid.Row="1" Grid.Column="0">
+			<TextBlock Classes="title">Запланированно</TextBlock>
+		</Border>
+		<Border Classes="border" Grid.Row="1" Grid.Column="1">
+		<TextBlock Classes="title" Grid.Row="1" Grid.Column="1">В работе</TextBlock>
+		</Border>
+		<Border Classes="border" Grid.Row="1" Grid.Column="2">
+			<TextBlock Classes="title" Grid.Row="1" Grid.Column="2">Завершено</TextBlock>
+		</Border>
+			<Border Grid.Row="2" Grid.Column="0" Classes="border">
+				<ListBox Items="{Binding TodoTasks}" VirtualizationMode="None" SelectionMode="Single">
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<Expander Header="{Binding #TaskName.Text}">
+								<Grid RowDefinitions="20 30 40 70 200 40 40" ColumnDefinitions="*" MinWidth="250">
+									<TextBlock Margin="0 0 0 10" Grid.Row="0" Grid.Column="0">Название</TextBlock>
+									<TextBox Name="TaskName" Grid.Row="1" Grid.Column="0" Text="{Binding Name}"></TextBox>
+
+									<TextBlock Margin="0 10 0 10" Grid.Row="2" Grid.Column="0">Описание</TextBlock>
+									<TextBox Grid.Row="3" Grid.Column="0" Text="{Binding Description}"></TextBox>
+
+									<Image Name="Image" Grid.Row="4" Grid.Column="0" Source="{Binding Image}"></Image>
+
+									<Button Click="AddImage" Classes="button" Grid.Row="5" Grid.Column="0">Добавить изображение</Button>
+									<Button Command="{Binding $parent[Window].DataContext.DeleteTodoTask}" CommandParameter="{Binding $self.DataContext}" Classes="button" Grid.Row="6" Grid.Column="0">Удалить</Button>
+								</Grid>
+							</Expander>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</Border>
+			<Border Grid.Row="2" Grid.Column="1" Classes="border">
+				<ListBox Items="{Binding ProcessTasks}" VirtualizationMode="None" SelectionMode="Single">
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<Expander Header="{Binding #TaskName.Text}">
+								<Grid RowDefinitions="20 30 40 70 200 40 40" ColumnDefinitions="*" MinWidth="250">
+									<TextBlock Margin="0 0 0 10" Grid.Row="0" Grid.Column="0">Название</TextBlock>
+									<TextBox Name="TaskName" Grid.Row="1" Grid.Column="0" Text="{Binding Name}"></TextBox>
+
+									<TextBlock Margin="0 10 0 10" Grid.Row="2" Grid.Column="0">Описание</TextBlock>
+									<TextBox Grid.Row="3" Grid.Column="0" Text="{Binding Description}"></TextBox>
+
+									<Image Margin="0 10 0 10" Name="Image" Grid.Row="4" Grid.Column="0" Source="{Binding Image}"></Image>
+
+									<Button Click="AddImage" Classes="button" Grid.Row="5" Grid.Column="0">Добавить изображение</Button>
+									<Button Command="{Binding $parent[Window].DataContext.DeleteTodoTask}" CommandParameter="{Binding $self.DataContext}" Classes="button" Grid.Row="6" Grid.Column="0">Удалить</Button>
+								</Grid>
+							</Expander>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</Border>
+			<Border Grid.Row="2" Grid.Column="2" Classes="border">
+				<ListBox Items="{Binding DoneTasks}" VirtualizationMode="None" SelectionMode="Single">
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<Expander Header="{Binding #TaskName.Text}">
+								<Grid RowDefinitions="20 30 40 70 200 40 40" ColumnDefinitions="*" MinWidth="250">
+									<TextBlock Margin="0 0 0 10" Grid.Row="0" Grid.Column="0">Название</TextBlock>
+									<TextBox Name="TaskName" Grid.Row="1" Grid.Column="0" Text="{Binding Name}"></TextBox>
+
+									<TextBlock Margin="0 10 0 10" Grid.Row="2" Grid.Column="0">Описание</TextBlock>
+									<TextBox Grid.Row="3" Grid.Column="0" Text="{Binding Description}"></TextBox>
+
+									<Image Name="Image" Grid.Row="4" Grid.Column="0" Source="{Binding Image}"></Image>
+
+									<Button Click="AddImage" Classes="button" Grid.Row="5" Grid.Column="0">Добавить изображение</Button>
+									<Button Command="{Binding $parent[Window].DataContext.DeleteTodoTask}" CommandParameter="{Binding $self.DataContext}" Classes="button" Grid.Row="6" Grid.Column="0">Удалить</Button>
+								</Grid>
+							</Expander>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</Border>
+		<Button Classes="button" Command="{Binding AddTodoTask}" CommandParameter="todo" Grid.Row="3" Grid.Column="0">Добавить задачу</Button>
+		<Button Classes="button" Command="{Binding AddTodoTask}" CommandParameter="process" Grid.Row="3" Grid.Column="1">Добавить задачу</Button>
+		<Button Classes="button" Command="{Binding AddTodoTask}" CommandParameter="done" Grid.Row="3" Grid.Column="2">Добавить задачу</Button>
+	</Grid>
+</Window>
